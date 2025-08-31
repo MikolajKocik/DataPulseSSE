@@ -8,6 +8,8 @@ A small, focused MCP (Model Context Protocol) server built with FastAPI that:
 
 It runs locally (Uvicorn) and can be hosted on Azure Functions (via a small adapter).
 
+![main](docs/readme-photo.png)
+
 ## Table of contents
 - Requirements
 - Configuration
