@@ -1,0 +1,24 @@
+# code formatter
+[tool.black] 
+line-length = 100
+target-version = ["py312"]
+
+# ensures fast detection errors and automatic formatting code
+[tool.ruff]
+line-length = 100
+extend-select = ["I"] # organizes, groups and sorting imports
+select = ["E","F","W","I"]
+
+# searches for not valid types in code
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_ignores = true
+no_implicit_optional = true
+# no types required while application starting
+disallow_untyped_defs = false
+pretty = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--maxfail=1 -q --cov=app --cov-report=term-missing --cov-report=xml --cov-fail-under=70"

@@ -3,3 +3,6 @@ requests
 python-jose
 azure-functions
 mangum
+fastapi
+uvicorn
+dotenv

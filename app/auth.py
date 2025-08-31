@@ -1,14 +1,18 @@
 import os
+from dotenv import load_dotenv
 from fastapi import HTTPException, Header
 from jose import jwt, JWTError
 
+load_dotenv()
 LOCAL_TOKEN = os.getenv("LOCAL_BEARER_TOKEN", "secret_token")
 JWT_ISSUER = os.getenv("JWT_ISSUER")
 JWT_AUDIENCE = os.getenv("JWT_AUDIENCE")
 JWT_KEY = os.getenv("JWT_KEY")
 
+# fast api dependency injection - header(...)
 def verify_bearer(authorization: str = Header(...)):
     if authorization.startswith("Bearer "):
+        # Extract the token part from the "Authorization" header (e.g. "Bearer <token>")
         token = authorization.split(" ", 1)[1]
         # Local token
         if token == LOCAL_TOKEN:

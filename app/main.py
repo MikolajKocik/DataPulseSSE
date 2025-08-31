@@ -26,7 +26,9 @@ async def events(session_id: str, auth=Depends(verify_bearer)):
                 msg = q.get(timeout=10)
                 yield f"data: {json.dumps(msg)}\n\n"
             except:
+                # Send an SSE comment as a heartbeat to keep the connection alive
                 yield ": ping\n\n"
+                # Small pause to avoid busy‑looping and reduce CPU usage
                 await asyncio.sleep(0.1)
     
     return StreamingResponse(
@@ -42,8 +44,10 @@ async def message(req: MCPRequest, session_id: str, auth=Depends(verify_bearer))
     q = queues.setdefault(session_id, Queue())
 
     try:
+        # return list tools
         if req.type == "list_tools":
             resp = MCPResponse(type="list_tools", request_id=req.request_id, data=list_tools())
+        # return specific tool
         elif req.type == "call_tool":
             tool = req.data.get("name")
             if tool == "get_time":
@@ -57,6 +61,7 @@ async def message(req: MCPRequest, session_id: str, auth=Depends(verify_bearer))
     except Exception as e:
                 resp = ErrorResponse(type="error", request_id=req.request_id, error=str(e))
     
+    # convert model to dict
     q.put(resp.model_dump())
 
     return {"status": "queued"}

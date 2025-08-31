@@ -9,6 +9,7 @@ def create_session(session_id: str):
 
 def validate_session(session_id: str):
     exp = _sessions.get(session_id)
+    # check if session is active
     if not exp or exp < time.time():
         _sessions.pop(session_id, None)
         return False
@@ -16,6 +17,8 @@ def validate_session(session_id: str):
 
 def cleanup_sessions():
     now = time.time()
+    # Build a list of expired session IDs
     expired = [sid for sid, exp in _sessions.items() if exp < now]
+    # Remove each expired session from the dictionary
     for sid in expired:
         _sessions.pop(sid, None)
